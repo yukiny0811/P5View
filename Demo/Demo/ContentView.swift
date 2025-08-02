@@ -9,14 +9,61 @@ import SwiftUI
 import P5View
 
 struct ContentView: View {
+
+    @State var words: [String] = ["ありがとう", "天才", "wow"]
+
+    var generatedWordString: String {
+        words.map { "\"\($0)\"" }.joined(separator: ",")
+    }
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        P5View(p5Source:
+            """
+            const words = [\(generatedWordString)];
+
+              const nodes = [];          // 各単語の初期角度などを保持
+              function setup() {
+                createCanvas(windowWidth, windowHeight);
+                textAlign(CENTER, CENTER);
+                textSize(64);
+                colorMode(HSB, 360, 100, 100, 100);
+
+                // 各単語に基準角度を割り当て
+                words.forEach((txt, i) => {
+                  nodes.push({ txt, base: (TWO_PI * i) / words.length });
+                });
+              }
+
+              function draw() {
+                background(0, 0, 0, 12);      // 少し残像を残す
+                translate(width / 2, height / 2);
+
+                const t = millis() * 0.0005;  // 時間パラメータ
+
+                nodes.forEach((n, i) => {
+                  // 角度を時間で回転させる
+                  const ang = n.base + t;
+                  // 半径をゆらゆらさせる
+                  const radius = 200 + 50 * sin(t * 2 + i);
+                  const x = radius * cos(ang);
+                  const y = radius * sin(ang);
+
+                  push();
+                  translate(x, y);
+                  rotate(ang + HALF_PI);      // 進行方向に向けて回転
+                  fill((ang * 180 / PI) % 360, 80, 100); // 色相を回転に合わせて変化
+                  noStroke();
+                  text(n.txt, 0, 0);
+                  pop();
+                });
+            }
+            """
+        )
+        .ignoresSafeArea()
+        
+        Button("add") {
+            words.append(UUID().uuidString)
         }
-        .padding()
     }
 }
 
