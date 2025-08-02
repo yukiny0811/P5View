@@ -16,30 +16,39 @@ struct ContentView: View {
         words.map { "\"\($0)\"" }.joined(separator: ",")
     }
 
+    let image = UIImage(named: "test.jpg")!.pngData()!.base64EncodedString()
+
     var body: some View {
         P5View(p5Source:
             """
             const words = [\(generatedWordString)];
+            const nodes = []; 
 
-              const nodes = [];          // 各単語の初期角度などを保持
-              function setup() {
+            let img;
+            
+            function preload() {
+                img = loadImage("data:image/png;base64,\(image)");
+            }
+            
+            function setup() {
                 createCanvas(windowWidth, windowHeight);
                 textAlign(CENTER, CENTER);
                 textSize(64);
                 colorMode(HSB, 360, 100, 100, 100);
-
-                // 各単語に基準角度を割り当て
+            
                 words.forEach((txt, i) => {
-                  nodes.push({ txt, base: (TWO_PI * i) / words.length });
+                    nodes.push({ txt, base: (TWO_PI * i) / words.length });
                 });
-              }
-
+            }
+            
               function draw() {
                 background(0, 0, 0, 12);      // 少し残像を残す
                 translate(width / 2, height / 2);
-
+                
+                image(img, 0, 0);
+            
                 const t = millis() * 0.0005;  // 時間パラメータ
-
+            
                 nodes.forEach((n, i) => {
                   // 角度を時間で回転させる
                   const ang = n.base + t;
@@ -47,7 +56,7 @@ struct ContentView: View {
                   const radius = 200 + 50 * sin(t * 2 + i);
                   const x = radius * cos(ang);
                   const y = radius * sin(ang);
-
+            
                   push();
                   translate(x, y);
                   rotate(ang + HALF_PI);      // 進行方向に向けて回転
@@ -57,10 +66,14 @@ struct ContentView: View {
                   pop();
                 });
             }
-            """
+            """,
+               baseURL: Bundle.main.resourceURL!
         )
         .ignoresSafeArea()
-        
+        .onAppear {
+            print(image)
+        }
+
         Button("add") {
             words.append(UUID().uuidString)
         }

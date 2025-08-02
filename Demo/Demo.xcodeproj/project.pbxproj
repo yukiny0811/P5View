@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		56BC4B602D5FE72F0025B3A1 /* PackageTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = 56BC4B5F2D5FE72F0025B3A1 /* PackageTemplate */; };
+		56BC4B602D5FE72F0025B3A1 /* P5View in Frameworks */ = {isa = PBXBuildFile; productRef = 56BC4B5F2D5FE72F0025B3A1 /* P5View */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56BC4B602D5FE72F0025B3A1 /* PackageTemplate in Frameworks */,
+				56BC4B602D5FE72F0025B3A1 /* P5View in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,7 +78,7 @@
 			);
 			name = Demo;
 			packageProductDependencies = (
-				56BC4B5F2D5FE72F0025B3A1 /* PackageTemplate */,
+				56BC4B5F2D5FE72F0025B3A1 /* P5View */,
 			);
 			productName = Demo;
 			productReference = 563363672D5F4FB400792155 /* Demo.app */;
@@ -355,7 +355,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		56BC4B5F2D5FE72F0025B3A1 /* PackageTemplate */ = {
+		56BC4B5F2D5FE72F0025B3A1 /* P5View */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = P5View;
 		};

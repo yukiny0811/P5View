@@ -13,13 +13,14 @@ typealias ViewRepresentable = NSViewRepresentable
 struct HTMLWebView: ViewRepresentable {
 
     let html: String      // そのまま渡す場合
+    let baseURL: URL
 
     #if os(iOS)
     func makeUIView(context: Context) -> WKWebView {
         WKWebView()
     }
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        uiView.loadHTMLString(html, baseURL: nil)
+        uiView.loadHTMLString(html, baseURL: baseURL)
     }
     #else
     func makeNSView(context: Context) -> WKWebView {
@@ -44,9 +45,11 @@ struct LazyView<V: View>: View {
 public struct P5View: View {
 
     let p5Source: String
+    let baseURL: URL
 
-    public init(p5Source: String) {
+    public init(p5Source: String, baseURL: URL) {
         self.p5Source = p5Source
+        self.baseURL = baseURL
     }
 
     public var html: some View {
@@ -69,7 +72,7 @@ public struct P5View: View {
             </script>
             </body>
             </html>
-            """)
+            """, baseURL: baseURL)
         )
     }
 
