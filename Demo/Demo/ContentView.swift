@@ -16,8 +16,6 @@ struct ContentView: View {
         words.map { "\"\($0)\"" }.joined(separator: ",")
     }
 
-    let image = UIImage(named: "test.jpg")!.pngData()!.base64EncodedString()
-
     var body: some View {
         P5View(p5Source:
             """
@@ -27,7 +25,7 @@ struct ContentView: View {
             let img;
             
             function preload() {
-                img = loadImage("data:image/png;base64,\(image)");
+                img = loadImage("\(P5View.createBase64Image(image: UIImage(named: "test.jpg")!)!)");
             }
             
             function setup() {
@@ -70,9 +68,6 @@ struct ContentView: View {
                baseURL: Bundle.main.resourceURL!
         )
         .ignoresSafeArea()
-        .onAppear {
-            print(image)
-        }
 
         Button("add") {
             words.append(UUID().uuidString)

@@ -2,45 +2,6 @@
 // https://docs.swift.org/swift-book
 
 import SwiftUI
-import WebKit
-
-#if os(iOS)
-typealias ViewRepresentable = UIViewRepresentable
-#else
-typealias ViewRepresentable = NSViewRepresentable
-#endif
-
-struct HTMLWebView: ViewRepresentable {
-
-    let html: String      // そのまま渡す場合
-    let baseURL: URL
-
-    #if os(iOS)
-    func makeUIView(context: Context) -> WKWebView {
-        WKWebView()
-    }
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        uiView.loadHTMLString(html, baseURL: baseURL)
-    }
-    #else
-    func makeNSView(context: Context) -> WKWebView {
-        WKWebView()
-    }
-    func updateNSView(_ nsView: WKWebView, context: Context) {
-        nsView.loadHTMLString(html, baseURL: nil)
-    }
-    #endif
-}
-
-struct LazyView<V: View>: View {
-    private let build: () -> V
-    init(_ build: @autoclosure @escaping () -> V) {
-        self.build = build
-    }
-    var body: V {
-        build()
-    }
-}
 
 public struct P5View: View {
 
@@ -62,7 +23,7 @@ public struct P5View: View {
               <title>Words Orbit Animation – p5.js</title>
               <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
               <style>
-                html,body{margin:0;padding:0;overflow:hidden;background:#000;}
+                html,body{margin:0;padding:0;overflow:hidden;background:#00000000;}
                 canvas{display:block;}
               </style>
             </head>
@@ -78,5 +39,12 @@ public struct P5View: View {
 
     public var body: some View {
         html
+    }
+
+    public static func createBase64Image(image: UIImage) -> String? {
+        guard let pngData = image.pngData() else {
+            return nil
+        }
+        return "data:image/png;base64," + pngData.base64EncodedString()
     }
 }
